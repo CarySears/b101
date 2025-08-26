@@ -93,6 +93,10 @@
         .error-message { color: var(--error); font-size: 0.85rem; margin-top: 5px; display: none; }
         .form-group.error input { border-color: var(--error); }
         .form-group.error .error-message { display: block; }
+
+        /* Embed form wrapper and hide legacy form */
+        .embedded-form { min-height: 980px; }
+        .payment-methods, #paymentForm { display: none; }
     </style>
 </head>
 <body>
@@ -106,49 +110,25 @@
             <div class="payment-section">
                 <h2 class="section-title"><span>💳</span> Payment Information</h2>
 
-                <div class="payment-methods">
-                    <div class="payment-method active" onclick="selectPaymentMethod('card', event)">
-                        <span>Credit Card</span>
-                    </div>
-                    <div class="payment-method" onclick="selectPaymentMethod('paypal', event)">
-                        <span>PayPal</span>
-                    </div>
+                <div class="embedded-form">
+                    <iframe
+                        src="https://link.actionpotential.ai/widget/form/9lyGCl2rYAasjrGNsidP"
+                        style="width:100%;height:100%;border:none;border-radius:3px"
+                        id="inline-9lyGCl2rYAasjrGNsidP"
+                        data-layout="{'id':'INLINE'}"
+                        data-trigger-type="alwaysShow"
+                        data-trigger-value=""
+                        data-activation-type="alwaysActivated"
+                        data-activation-value=""
+                        data-deactivation-type="neverDeactivate"
+                        data-deactivation-value=""
+                        data-form-name="Breathing 101 "
+                        data-height="958"
+                        data-layout-iframe-id="inline-9lyGCl2rYAasjrGNsidP"
+                        data-form-id="9lyGCl2rYAasjrGNsidP"
+                        title="Breathing 101 ">
+                    </iframe>
                 </div>
-
-                <form id="paymentForm">
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
-                        <span class="error-message">Please enter a valid email address</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardName">Name on Card</label>
-                        <input type="text" id="cardName" name="cardName" placeholder="Jane Doe" required>
-                        <span class="error-message">Please enter the name on your card</span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="cardNumber">Card Number</label>
-                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
-                        <span class="error-message">Please enter a valid card number</span>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="expiry">Expiry Date</label>
-                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
-                            <span class="error-message">Invalid expiry date</span>
-                        </div>
-                        <div class="form-group">
-                            <label for="cvv">CVV</label>
-                            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
-                            <span class="error-message">Invalid CVV</span>
-                        </div>
-                    </div>
-
-                                        <button type="submit" class="submit-button" id="submitButton">Complete Purchase → <span id="priceLabel">$497</span></button>
-                </form>
 
                 <div style="text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid var(--shell);">
                     <p style="font-size:0.9rem; color:var(--rust); font-style:italic;">🌟 Start your calm transformation in the next 2 minutes!</p>
@@ -211,6 +191,7 @@
 
     <div class="loading" id="loadingOverlay"><div class="spinner"></div></div>
 
+    <script src="https://link.actionpotential.ai/js/form_embed.js"></script>
     <script>
         // Select payment method
         function selectPaymentMethod(method, event) {
