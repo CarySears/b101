@@ -83,12 +83,12 @@
         <div class="order-details fade-in">
             <div class="order-number">Order #CB-2025-<span id="orderNumber"></span></div>
             <div class="order-item">
-                <span id="orderTitle"><strong>Catch Your Breath Kit</strong></span>
-                <span id="orderPrice">$9.00</span>
+                <span id="orderTitle"><strong>Breathing 101 – Full Course</strong></span>
+                <span id="orderPrice">$497.00</span>
             </div>
             <div class="order-item" style="font-weight: 600; color: var(--sea);">
                 <span>Total Paid</span>
-                <span id="orderTotal">$9.00</span>
+                <span id="orderTotal">$497.00</span>
             </div>
         </div>
 
@@ -210,8 +210,6 @@
 
         // Adapt content based on product
         (function initFromQuery(){
-            const params = new URLSearchParams(window.location.search);
-            const product = params.get('product') || 'kit';
             const orderTitle = document.getElementById('orderTitle');
             const orderPrice = document.getElementById('orderPrice');
             const orderTotal = document.getElementById('orderTotal');
@@ -222,24 +220,20 @@
             const bannerSubtitle = document.getElementById('bannerSubtitle');
             const accessLink = document.getElementById('accessLink');
 
-            if (product === 'breathing101') {
-                orderTitle.innerHTML = '<strong>Breathing 101 – Full Course</strong>';
-                orderPrice.textContent = '$497.00';
-                orderTotal.textContent = '$497.00';
-                bannerTitle.textContent = '🎉 You Saved Time & Energy!';
-                bannerSubtitle.textContent = 'You now have lifetime access to all 8 modules.';
-                includedTitle1.textContent = '🎯 Breathing 101 System';
-                includedList1.innerHTML = `
-                    <li>8 deep-dive video modules</li>
-                    <li>Guided audio meditations</li>
-                    <li>Lifetime access & updates</li>
-                    <li>Immediate full access</li>
-                `;
-                includedBlock2.style.display = 'none';
-                accessLink.textContent = 'Access Your Course';
-            } else {
-                accessLink.textContent = 'Access Your Kit';
-            }
+            orderTitle.innerHTML = '<strong>Breathing 101 – Full Course</strong>';
+            orderPrice.textContent = '$497.00';
+            orderTotal.textContent = '$497.00';
+            bannerTitle.textContent = '🎉 You’re In!';
+            bannerSubtitle.textContent = 'You now have lifetime access to all 8 modules.';
+            includedTitle1.textContent = '🎯 Breathing 101 System';
+            includedList1.innerHTML = `
+                <li>8 deep-dive video modules</li>
+                <li>Guided audio meditations</li>
+                <li>Lifetime access & updates</li>
+                <li>Immediate full access</li>
+            `;
+            includedBlock2.style.display = 'none';
+            accessLink.textContent = 'Access Your Course';
         })();
 
         // Smooth reveal on scroll

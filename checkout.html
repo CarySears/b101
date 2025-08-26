@@ -147,7 +147,7 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="submit-button" id="submitButton">Complete Purchase → <span id="priceLabel">$9</span></button>
+                                        <button type="submit" class="submit-button" id="submitButton">Complete Purchase → <span id="priceLabel">$497</span></button>
                 </form>
 
                 <div style="text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid var(--shell);">
@@ -175,10 +175,10 @@
 
                 <div class="order-item" id="mainItem">
                     <div class="item-details">
-                        <h3 id="productTitle">Catch Your Breath Kit</h3>
-                        <p id="productSubtitle">3 breathing techniques + masterclass + support</p>
+                        <h3 id="productTitle">Breathing 101 – Full Course</h3>
+                        <p id="productSubtitle">8 modules + guided audios + lifetime access</p>
                     </div>
-                    <div class="item-price" id="productPrice">$9</div>
+                    <div class="item-price" id="productPrice">$497</div>
                 </div>
 
                 <div style="background: linear-gradient(135deg, rgba(163,182,229,0.2) 0%, rgba(163,182,229,0.1) 100%); border-radius: 12px; padding: 25px 18px 18px; margin: 20px 0 15px; border: 2px solid var(--sky); position: relative;">
@@ -186,21 +186,18 @@
                         <span style="font-size: 0.85rem; color: var(--sea); font-weight: 600;">✨ Instant Access to Everything</span>
                     </div>
                     <ul id="benefitsList" style="font-size: 0.85rem; color: var(--sea); margin: 5px 0 0 0; padding-left: 20px; line-height: 1.8;">
-                        <li><strong>The Fundamentals Breath</strong> - 60-second stress reset</li>
-                        <li><strong>Spirit Connection Breath</strong> - tap into deeper presence</li>
-                        <li><strong>Fear-Release Breath</strong> - transform anxiety to calm</li>
-                        <li><strong>10-min video masterclass</strong> with Anna Brooke</li>
-                        <li><strong>Printable cheat-sheet</strong> - carry calm everywhere</li>
-                        <li><strong>3-day email course</strong> - lock in the habit</li>
-                        <li><strong>Text support</strong> - get help when you need it</li>
+                        <li><strong>8 Deep-Dive Video Modules</strong> – step-by-step training</li>
+                        <li><strong>Guided Audio Meditations</strong> – support every step</li>
+                        <li><strong>Lifetime Access & Updates</strong> – revisit anytime</li>
+                        <li><strong>Immediate Full Access</strong> – start today</li>
                     </ul>
-                    <p id="valueLine" style="font-size: 0.85rem; color: var(--coral); margin: 12px 0 0 0; font-weight: 600; text-align: center;">🎯 Total Value: $275 → Today Just $9</p>
+                    <p id="valueLine" style="font-size: 0.85rem; color: var(--coral); margin: 12px 0 0 0; font-weight: 600; text-align: center;">🎯 Total Value: $641 → Today $497</p>
                 </div>
 
                 <div class="order-totals">
                     <div class="total-row final">
                         <span>Total Due Today</span>
-                        <span id="totalAmount">$9.00</span>
+                        <span id="totalAmount">$497.00</span>
                     </div>
                 </div>
 
@@ -258,8 +255,6 @@
 
         // Parse product from query and adapt UI
         function setProductFromQuery() {
-            const params = new URLSearchParams(window.location.search);
-            const product = params.get('product') || 'kit';
             const productTitle = document.getElementById('productTitle');
             const productSubtitle = document.getElementById('productSubtitle');
             const productPrice = document.getElementById('productPrice');
@@ -268,20 +263,18 @@
             const benefitsList = document.getElementById('benefitsList');
             const valueLine = document.getElementById('valueLine');
 
-            if (product === 'breathing101') {
-                productTitle.textContent = 'Breathing 101 – Full Course';
-                productSubtitle.textContent = '8 modules + guided audios + lifetime access';
-                productPrice.textContent = '$497';
-                priceLabel.textContent = '$497';
-                totalAmount.textContent = '$497.00';
-                benefitsList.innerHTML = `
-                    <li><strong>8 Deep-Dive Video Modules</strong> – step-by-step training</li>
-                    <li><strong>Guided Audio Meditations</strong> – support every step</li>
-                    <li><strong>Lifetime Access & Updates</strong> – revisit anytime</li>
-                    <li><strong>Immediate Full Access</strong> – start today</li>
-                `;
-                valueLine.textContent = '🎯 Total Value: $641 → Today $497';
-            }
+            productTitle.textContent = 'Breathing 101 – Full Course';
+            productSubtitle.textContent = '8 modules + guided audios + lifetime access';
+            productPrice.textContent = '$497';
+            if (priceLabel) priceLabel.textContent = '$497';
+            totalAmount.textContent = '$497.00';
+            benefitsList.innerHTML = `
+                <li><strong>8 Deep-Dive Video Modules</strong> – step-by-step training</li>
+                <li><strong>Guided Audio Meditations</strong> – support every step</li>
+                <li><strong>Lifetime Access & Updates</strong> – revisit anytime</li>
+                <li><strong>Immediate Full Access</strong> – start today</li>
+            `;
+            valueLine.textContent = '🎯 Total Value: $641 → Today $497';
         }
         setProductFromQuery();
 
@@ -292,9 +285,7 @@
             document.getElementById('loadingOverlay').classList.add('active');
             setTimeout(() => {
                 document.getElementById('loadingOverlay').classList.remove('active');
-                const params = new URLSearchParams(window.location.search);
-                const product = params.get('product') || 'kit';
-                window.location.href = `/success.html?product=${product}`;
+                window.location.href = '/success.html';
             }, 1200);
         });
 
