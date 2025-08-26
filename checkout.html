@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout - Anna Brooke Healing</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --rust: #9b4d32;
+            --coral: #e27756;
+            --shell: #f3d9d0;
+            --sand: #f2ede2;
+            --ochre: #ce8f29;
+            --sea: #164a50;
+            --sky: #a3b6e5;
+            --success: #00c853;
+            --error: #ff4444;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f2ede2 0%, #f3d9d0 100%);
+            min-height: 100vh;
+            color: var(--sea);
+            overflow-x: hidden;
+        }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        
+        .header { text-align: center; padding: 30px 0; border-bottom: 1px solid rgba(22,74,80,0.1); margin-bottom: 40px; }
+        .header h1 { font-size: 2rem; color: var(--sea); margin-bottom: 10px; }
+        .secure-badge { display: inline-flex; align-items: center; gap: 8px; color: var(--ochre); font-size: 0.9rem; font-weight: 500; }
+        .secure-badge::before { content: '🔒'; }
+        
+        .checkout-container { display: grid; grid-template-columns: 1fr 400px; gap: 40px; align-items: start; overflow: visible; }
+        
+        .payment-section { background: #fff; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(22,74,80,0.08); }
+        .section-title { font-size: 1.5rem; color: var(--sea); margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; color: var(--rust); font-weight: 500; margin-bottom: 8px; font-size: 0.95rem; }
+        .form-group input { width: 100%; padding: 12px 16px; border: 2px solid var(--shell); border-radius: 10px; font-size: 1rem; transition: all 0.3s ease; font-family: inherit; }
+        .form-group input:focus { outline: none; border-color: var(--coral); box-shadow: 0 0 0 3px rgba(226,119,86,0.1); }
+        .form-row { display: grid; grid-template-columns: 2fr 1fr; gap: 15px; }
+        
+        .payment-methods { display: flex; gap: 10px; margin-bottom: 25px; }
+        .payment-method { flex: 1; padding: 15px; border: 2px solid var(--shell); border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.3s ease; background: #fff; }
+        .payment-method.active { border-color: var(--coral); background: linear-gradient(135deg, rgba(226,119,86,0.05) 0%, rgba(226,119,86,0.02) 100%); }
+        .payment-method span { display: block; font-size: 0.9rem; color: var(--sea); font-weight: 500; }
+        
+        .order-summary { background: #fff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(22,74,80,0.08); position: sticky; top: 20px; overflow: visible; }
+        .order-item { display: flex; justify-content: space-between; align-items: start; padding: 20px 0; border-bottom: 1px solid var(--shell); }
+        .item-details h3 { font-size: 1.1rem; color: var(--sea); margin-bottom: 5px; }
+        .item-details p { font-size: 0.9rem; color: var(--rust); opacity: 0.8; }
+        .item-price { font-size: 1.2rem; font-weight: 600; color: var(--sea); text-align: right; }
+        
+        .upgrade-offer { background: linear-gradient(135deg, rgba(206,143,41,0.1) 0%, rgba(206,143,41,0.05) 100%); border: 2px solid var(--ochre); border-radius: 15px; padding: 25px 20px 20px; margin: 20px 0; position: relative; overflow: visible; }
+        .upgrade-offer::before { content: 'SPECIAL OFFER'; position: absolute; top: -8px; right: 20px; background: var(--ochre); color: #fff; padding: 5px 20px; font-size: 0.75rem; font-weight: 600; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .upgrade-checkbox { display: flex; align-items: start; gap: 12px; cursor: pointer; }
+        .upgrade-checkbox input { margin-top: 2px; width: 20px; height: 20px; cursor: pointer; }
+        .upgrade-details h4 { color: var(--sea); margin-bottom: 8px; font-size: 1.1rem; }
+        .upgrade-details p { font-size: 0.9rem; color: var(--rust); margin-bottom: 5px; }
+        .savings-badge { display: inline-block; background: var(--success); color: #fff; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 8px; }
+        
+        .order-totals { margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--shell); }
+        .total-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+        .total-row.final { font-size: 1.3rem; font-weight: 600; color: var(--sea); margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--shell); }
+        
+        .submit-button { width: 100%; background: linear-gradient(135deg, var(--sea) 0%, #0d3d42 100%); color: #fff; padding: 18px; border: none; border-radius: 50px; font-size: 1.1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 30px; position: relative; overflow: hidden; }
+        .submit-button:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(22,74,80,0.3); }
+        .submit-button::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); transition: left 0.5s ease; }
+        .submit-button:hover::before { left: 100%; }
+        
+        .trust-elements { display: flex; justify-content: center; gap: 30px; margin-top: 30px; padding-top: 30px; border-top: 1px solid var(--shell); }
+        .trust-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--rust); }
+        .trust-item svg { width: 20px; height: 20px; fill: var(--ochre); }
+        
+        .guarantee-box { background: linear-gradient(135deg, var(--sky) 10%, rgba(163,182,229,0.1) 100%); border-radius: 15px; padding: 20px; margin-top: 20px; text-align: center; border: 1px solid var(--sky); }
+        .guarantee-box h4 { color: var(--sea); margin-bottom: 8px; }
+        .guarantee-box p { font-size: 0.9rem; color: var(--rust); }
+        
+        .loading { display: none; position: fixed; inset: 0; background: rgba(255,255,255,0.9); z-index: 1000; align-items: center; justify-content: center; }
+        .loading.active { display: flex; }
+        .spinner { width: 50px; height: 50px; border: 3px solid var(--shell); border-top-color: var(--coral); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        @media (max-width: 968px) { .checkout-container { grid-template-columns: 1fr; } .order-summary { position: static; margin-top: 40px; } }
+        @media (max-width: 480px) { .payment-section, .order-summary { padding: 25px; } .form-row { grid-template-columns: 1fr; } .payment-methods { flex-direction: column; } .trust-elements { flex-direction: column; gap: 15px; align-items: center; } .upgrade-offer::before { font-size: 0.65rem; padding: 3px 15px; } }
+        
+        .error-message { color: var(--error); font-size: 0.85rem; margin-top: 5px; display: none; }
+        .form-group.error input { border-color: var(--error); }
+        .form-group.error .error-message { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Complete Your Order</h1>
+            <span class="secure-badge">Secure Checkout • 256-bit SSL Encryption</span>
+        </header>
+
+        <div class="checkout-container">
+            <div class="payment-section">
+                <h2 class="section-title"><span>💳</span> Payment Information</h2>
+
+                <div class="payment-methods">
+                    <div class="payment-method active" onclick="selectPaymentMethod('card', event)">
+                        <span>Credit Card</span>
+                    </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('paypal', event)">
+                        <span>PayPal</span>
+                    </div>
+                </div>
+
+                <form id="paymentForm">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                        <span class="error-message">Please enter a valid email address</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardName">Name on Card</label>
+                        <input type="text" id="cardName" name="cardName" placeholder="Jane Doe" required>
+                        <span class="error-message">Please enter the name on your card</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cardNumber">Card Number</label>
+                        <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        <span class="error-message">Please enter a valid card number</span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiry">Expiry Date</label>
+                            <input type="text" id="expiry" name="expiry" placeholder="MM/YY" maxlength="5" required>
+                            <span class="error-message">Invalid expiry date</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4" required>
+                            <span class="error-message">Invalid CVV</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-button" id="submitButton">Complete Purchase → <span id="priceLabel">$9</span></button>
+                </form>
+
+                <div style="text-align:center; margin-top:20px; padding-top:20px; border-top:1px solid var(--shell);">
+                    <p style="font-size:0.9rem; color:var(--rust); font-style:italic;">🌟 Start your calm transformation in the next 2 minutes!</p>
+                </div>
+
+                <div class="trust-elements">
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+                        <span>Secure Payment</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        <span>Money-Back Guarantee</span>
+                    </div>
+                    <div class="trust-item">
+                        <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z"/></svg>
+                        <span>Private & Encrypted</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-summary">
+                <h2 class="section-title">Order Summary</h2>
+
+                <div class="order-item" id="mainItem">
+                    <div class="item-details">
+                        <h3 id="productTitle">Catch Your Breath Kit</h3>
+                        <p id="productSubtitle">3 breathing techniques + masterclass + support</p>
+                    </div>
+                    <div class="item-price" id="productPrice">$9</div>
+                </div>
+
+                <div style="background: linear-gradient(135deg, rgba(163,182,229,0.2) 0%, rgba(163,182,229,0.1) 100%); border-radius: 12px; padding: 25px 18px 18px; margin: 20px 0 15px; border: 2px solid var(--sky); position: relative;">
+                    <div style="position: absolute; top: -12px; left: 20px; background: white; padding: 2px 12px; border-radius: 20px; border: 2px solid var(--sky);">
+                        <span style="font-size: 0.85rem; color: var(--sea); font-weight: 600;">✨ Instant Access to Everything</span>
+                    </div>
+                    <ul id="benefitsList" style="font-size: 0.85rem; color: var(--sea); margin: 5px 0 0 0; padding-left: 20px; line-height: 1.8;">
+                        <li><strong>The Fundamentals Breath</strong> - 60-second stress reset</li>
+                        <li><strong>Spirit Connection Breath</strong> - tap into deeper presence</li>
+                        <li><strong>Fear-Release Breath</strong> - transform anxiety to calm</li>
+                        <li><strong>10-min video masterclass</strong> with Anna Brooke</li>
+                        <li><strong>Printable cheat-sheet</strong> - carry calm everywhere</li>
+                        <li><strong>3-day email course</strong> - lock in the habit</li>
+                        <li><strong>Text support</strong> - get help when you need it</li>
+                    </ul>
+                    <p id="valueLine" style="font-size: 0.85rem; color: var(--coral); margin: 12px 0 0 0; font-weight: 600; text-align: center;">🎯 Total Value: $275 → Today Just $9</p>
+                </div>
+
+                <div class="order-totals">
+                    <div class="total-row final">
+                        <span>Total Due Today</span>
+                        <span id="totalAmount">$9.00</span>
+                    </div>
+                </div>
+
+                <div class="guarantee-box">
+                    <h4>7-Day Money-Back Guarantee</h4>
+                    <p>Try everything risk-free. If you're not completely satisfied, get a full refund—no questions asked.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="loading" id="loadingOverlay"><div class="spinner"></div></div>
+
+    <script>
+        // Select payment method
+        function selectPaymentMethod(method, event) {
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            event.target.closest('.payment-method').classList.add('active');
+            if (method === 'paypal') {
+                alert('PayPal would redirect to PayPal checkout in production.');
+            }
+        }
+
+        // Format inputs
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) value = value.slice(0,2) + '/' + value.slice(2,4);
+            e.target.value = value;
+        });
+        document.getElementById('cvv').addEventListener('input', function(e) { e.target.value = e.target.value.replace(/\D/g, ''); });
+
+        // Validation
+        function validateForm() {
+            let isValid = true;
+            const email = document.getElementById('email');
+            const cardName = document.getElementById('cardName');
+            const cardNumber = document.getElementById('cardNumber');
+            const expiry = document.getElementById('expiry');
+            const cvv = document.getElementById('cvv');
+            document.querySelectorAll('.form-group').forEach(group => group.classList.remove('error'));
+            if (!email.value || !email.value.includes('@')) { email.closest('.form-group').classList.add('error'); isValid = false; }
+            if (!cardName.value || cardName.value.length < 2) { cardName.closest('.form-group').classList.add('error'); isValid = false; }
+            const cardNumberClean = cardNumber.value.replace(/\s/g, '');
+            if (!cardNumberClean || cardNumberClean.length < 13 || cardNumberClean.length > 19) { cardNumber.closest('.form-group').classList.add('error'); isValid = false; }
+            const parts = expiry.value.split('/');
+            if (!expiry.value || parts.length !== 2 || parts[0].length !== 2 || parts[1].length !== 2) { expiry.closest('.form-group').classList.add('error'); isValid = false; }
+            if (!cvv.value || cvv.value.length < 3 || cvv.value.length > 4) { cvv.closest('.form-group').classList.add('error'); isValid = false; }
+            return isValid;
+        }
+
+        // Parse product from query and adapt UI
+        function setProductFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const product = params.get('product') || 'kit';
+            const productTitle = document.getElementById('productTitle');
+            const productSubtitle = document.getElementById('productSubtitle');
+            const productPrice = document.getElementById('productPrice');
+            const priceLabel = document.getElementById('priceLabel');
+            const totalAmount = document.getElementById('totalAmount');
+            const benefitsList = document.getElementById('benefitsList');
+            const valueLine = document.getElementById('valueLine');
+
+            if (product === 'breathing101') {
+                productTitle.textContent = 'Breathing 101 – Full Course';
+                productSubtitle.textContent = '8 modules + guided audios + lifetime access';
+                productPrice.textContent = '$497';
+                priceLabel.textContent = '$497';
+                totalAmount.textContent = '$497.00';
+                benefitsList.innerHTML = `
+                    <li><strong>8 Deep-Dive Video Modules</strong> – step-by-step training</li>
+                    <li><strong>Guided Audio Meditations</strong> – support every step</li>
+                    <li><strong>Lifetime Access & Updates</strong> – revisit anytime</li>
+                    <li><strong>Immediate Full Access</strong> – start today</li>
+                `;
+                valueLine.textContent = '🎯 Total Value: $641 → Today $497';
+            }
+        }
+        setProductFromQuery();
+
+        // Submit
+        document.getElementById('paymentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!validateForm()) return;
+            document.getElementById('loadingOverlay').classList.add('active');
+            setTimeout(() => {
+                document.getElementById('loadingOverlay').classList.remove('active');
+                const params = new URLSearchParams(window.location.search);
+                const product = params.get('product') || 'kit';
+                window.location.href = `/success.html?product=${product}`;
+            }, 1200);
+        });
+
+        // Smooth scroll on mobile to summary
+        if (window.innerWidth <= 968) {
+            document.querySelector('.order-summary').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
